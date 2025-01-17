@@ -15,4 +15,4 @@ Tyler|Whipple
 
 ### Subheading
 1. step 1
-2. step 2
+1. step 2
