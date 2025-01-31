@@ -10,9 +10,9 @@ tags:
 * List item 1
 * List item 2
 
-|name | description|
-|-----|------------|
-|Tyler|Whipple|
+| name | description |
+| ----- | ------------ |
+| Tyler | Whipple |
 
 ### Subheading
 1. step 1
