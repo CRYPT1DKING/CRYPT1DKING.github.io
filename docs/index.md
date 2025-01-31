@@ -14,6 +14,5 @@ tags:
 | ----- | ------------ |
 | Tyler | Whipple |
 
-### Subheading
-1. step 1
-1. step 2
+### Block Diagram
+[Block Diagram](/docs/block-diagram.md)
