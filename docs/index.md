@@ -13,6 +13,4 @@ tags:
 | name | description |
 | ----- | ------------ |
 | Tyler | Whipple |
-
-### Block Diagram
-[Block Diagram](/docs/block-diagram.md)
+| Frank | Can't Code |
