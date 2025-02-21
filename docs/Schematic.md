@@ -4,4 +4,4 @@ title: Schematic
 
 ## Schematic
 
-![Schematic](WhippleSchematic.pdf)
+![Schematic](WhippleSchematic.png)
