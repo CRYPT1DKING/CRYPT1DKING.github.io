@@ -5,12 +5,7 @@ tags:
 - tag2
 ---
 
-## Hello, my name is Tyler
+## Team 202 Hall Effect Sensor
 
-* List item 1
-* List item 2
-
-| name | description |
-| ----- | ------------ |
-| Tyler | Whipple |
-| Frank | Can't Code |
+This is the data sheet for EGR 314 Team 202's Hall Effect sensor board.<br>
+The purpose of this board is to read the rotational velocity of the generator's motor as well as its voltage output via the hall effect sensor and internal ADC pin in the microcontroller.
