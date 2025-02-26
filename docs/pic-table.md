@@ -31,3 +31,4 @@ title: PIC Table
 | ICSP       | 1           | 1      | 3                              |
 
 ![MCC_Diagram](SOIC28.png)
+![MCC_PINS](MCCPins.png)
