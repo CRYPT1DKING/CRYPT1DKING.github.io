@@ -421,6 +421,26 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#switching-regulator" class="md-nav__link">
+    Switching Regulator
+  </a>
+  
+    <nav class="md-nav" aria-label="Switching Regulator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selected-component_1" class="md-nav__link">
+    Selected Component
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#simple-needed-components" class="md-nav__link">
     Simple Needed Components
   </a>
@@ -537,6 +557,26 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#switching-regulator" class="md-nav__link">
+    Switching Regulator
+  </a>
+  
+    <nav class="md-nav" aria-label="Switching Regulator">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selected-component_1" class="md-nav__link">
+    Selected Component
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#simple-needed-components" class="md-nav__link">
     Simple Needed Components
   </a>
@@ -598,6 +638,36 @@
 <h3 id="selected-component">Selected Component</h3>
 <p><strong>Choice:</strong> Option 1: AS5600<br>
 <strong>Rationale:</strong> The reason for choosing this Hall Effect sensor is due to the familiarity of use. In addition, as we are just using it as a way to measure motor rotational speed we do not need one as accurate or expensive in favor of a less accurate cheaper option. The lack of a usable library means more digging into the data sheet for needed information but the Arduino libraries can help with example code.</p>
+<h2 id="switching-regulator">Switching Regulator</h2>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Pros</th>
+<th>Cons</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LM2575D2T $3.32 <a href="https://www.digikey.com/en/products/detail/onsemi/LM2575D2T-3-3R4G/1476688">Link</a> <br> <a class="glightbox" href="../Regulator%201.jpg" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Reg1" src="../Regulator%201.jpg" /></a></td>
+<td><ul><li>Used in Class</li><li>Few extra components</li><li>3.3V Output Voltage</li></ul></td>
+<td><ul><li>1A current output</li><li>Expensive</li></ul></td>
+</tr>
+<tr>
+<td>TLV61046ADBVR $1.09 <a href="https://www.digikey.com/en/products/detail/texas-instruments/TLV61046ADBVR/8133008">Link</a> <br> <a class="glightbox" href="../Regulator%202.jpg" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Reg2" src="../Regulator%202.jpg" /></a></td>
+<td><ul><li>Cheap</li><li>Few extra components</li><li>3.3V output</li></ul></td>
+<td><ul><li>5.5V Max input</li><li>1A current output</li></ul></td>
+</tr>
+<tr>
+<td>AP63203WU-7 $1.38 <a href="https://www.digikey.com/en/products/detail/diodes-incorporated/AP63203WU-7/9858426">Link</a> <br> <a class="glightbox" href="../Regulator%203.jpg" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Reg3" src="../Regulator%203.jpg" /></a></td>
+<td><ul><li>Cheap</li><li>2A current output</li><li>3.3V output</li></ul></td>
+<td><ul><li>lots of extra components</li><li>fast switching frequency making more noise</li></ul></td>
+</tr>
+</tbody>
+</table>
+<h3 id="selected-component_1">Selected Component</h3>
+<p><strong>Choice:</strong> Option 1: LM2575D2T<br>
+<strong>Rationale:</strong> The reason for choosing this switching regulator is due to the low amount of external components and constant 1A current output as the rest of the system does not need more than ""mA.</p>
 <h2 id="simple-needed-components">Simple Needed Components</h2>
 <table>
 <thead>
@@ -624,8 +694,8 @@
 <td><ul><li>220uH <a href="https://www.digikey.com/en/products/detail/bourns-inc/CM453232-221KL/1970080">Link</a></li><ul></td>
 </tr>
 <tr>
-<td>Switching Regulator</td>
-<td><ul><li>3.3V <a href="https://www.digikey.com/en/products/detail/onsemi/LM2575D2T-3-3R4G/1476688">Link</a></li><ul></td>
+<td>LED</td>
+<td><ul><li>150mA <a href="https://www.digikey.com/en/products/detail/ams-osram-usa-inc/GT-JTLPS1-13-KKLN-25-1-150-R33/16820475">Link</a></li><ul></td>
 </tr>
 <tr>
 <td>Simple AC Motor<br> <strong><em>Non-Driven, position measured by sensor</em></strong></td>
