@@ -31,7 +31,7 @@ title: Component Selection
 | Component | Specs |
 | --------- | ----- |
 | Resistor | <ul><li>10k [Link](https://www.digikey.com/en/products/detail/stackpole-electronics-inc/RMCF2010FT10K0/1758376)</li><li>330 [Link](https://www.digikey.com/en/products/detail/stackpole-electronics-inc/RMCF2010JT1K20/1757109)</li><ul> |
-| Capacitor | <ul><li>100nF [Link](https://www.digikey.com/en/products/detail/yageo/CC0805KRX7R9BB104/302874)</li><li>100uF [Link](<li>100nF [Link](https://www.digikey.com/en/products/detail/yageo/CC0805KRX7R9BB104/302874)</li>)</li><ul> |
+| Capacitor | <ul><li>100nF [Link](https://www.digikey.com/en/products/detail/yageo/CC0805KRX7R9BB104/302874)</li><li>100uF [Link](https://www.digikey.com/en/products/detail/murata-electronics/GRM31CD80J107MEA8K/13905021)</li><li>330uF [Link](https://www.digikey.com/en/products/detail/murata-electronics/GRM32ER60G337ME05L/6155746)</li><ul> |
 | Diode | <ul><li>600mV @ 1A [Link](https://www.digikey.com/en/products/detail/micro-commercial-co/B5819WS-TP/2213555)</li><ul> |
 | Inductor | <ul><li>220uH [Link](https://www.digikey.com/en/products/detail/bourns-inc/CM453232-221KL/1970080)</li><ul> |
 | LED | <ul><li>150mA [Link](https://www.digikey.com/en/products/detail/ams-osram-usa-inc/GT-JTLPS1-13-KKLN-25-1-150-R33/16820475)</li><ul> |
