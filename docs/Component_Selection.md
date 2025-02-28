@@ -36,3 +36,7 @@ title: Component Selection
 | Inductor | <ul><li>220uH [Link](https://www.digikey.com/en/products/detail/bourns-inc/CM453232-221KL/1970080)</li><ul> |
 | LED | <ul><li>150mA [Link](https://www.digikey.com/en/products/detail/ams-osram-usa-inc/GT-JTLPS1-13-KKLN-25-1-150-R33/16820475)</li><ul> |
 | Simple AC Motor<br> ***Non-Driven, position measured by sensor*** | [Link](https://www.digikey.com/en/products/detail/sparkfun-electronics/ROB-11696/6163657?gclsrc=aw.ds&&utm_adgroup=&utm_source=google&utm_medium=cpc&utm_campaign=PMax%20Shopping_Product_Low%20ROAS%20Categories&utm_term=&utm_content=&utm_id=go_cmp-20243063506_adg-_ad-__dev-c_ext-_prd-6163657_sig-CjwKCAiA2JG9BhAuEiwAH_zf3oq15u6VnL4cq87XFDrNdmTuq9TBOPO5mJv7fST6NklMeJz0bCmOzxoCzhsQAvD_BwE&gad_source=1&gclid=CjwKCAiA2JG9BhAuEiwAH_zf3oq15u6VnL4cq87XFDrNdmTuq9TBOPO5mJv7fST6NklMeJz0bCmOzxoCzhsQAvD_BwE&gclsrc=aw.ds) |
+
+## Power Budget
+
+![PowerBudget](PowerBudget.png)
