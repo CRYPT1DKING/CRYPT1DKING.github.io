@@ -1,14 +1,19 @@
 ---
 title: Messages
 ---
+## Team ID
+| Name | Tyler | Alex | Frank | Luis |
+| ---- | ----- | ---- | ----- | ---- |
+| ID | c | a | d | b |
 
-## Message Structure
+## Messages Sent
 
-| Bytes | Byte 1-7 | Byte 8 |
-| ----- | -------- | ------ |
-| Message Type | UART | UART |
-| Variable Name | Motor Speed | Output Voltage |
-| Variable Type | int | int |
-| Min Value | 0 | 0 |
-| Max Value| 1000 | 3 |
-| Example | 500 | 2 |
+| Bytes | Byte 4 |
+| ----- | ------ |
+| Variable Name | Motor Speed |
+| Variable Type | uint8_t |
+| Min Value | 0 |
+| Max Value| 127 |
+| Example | 27 |
+
+## Only receiving broadcast messages
