@@ -4,9 +4,9 @@ title: Messages
 
 ## Message Structure
 
-| Bytes | Byte 1 | Byte 4 | Byte 3 | Byte 4 | Byte 5-x | Byte x+1 | Byte x+2 |
-| ----- | ------ | ------ | ------ | ------ | -------- | -------- | -------- |
-| Contents | 'A' | 'Z' | sender ID | receiver ID | Message contents | 'Y' | 'B' |
+| Bytes | Byte 1 | Byte 4 | Byte 3 | Byte 4 | Byte 5 | Byte 6-x | Byte x+1 | Byte x+2 |
+| ----- | ------ | ------ | ------ | ------ | ------ | -------- | -------- | -------- |
+| Contents | 'A' | 'Z' | sender ID | receiver ID | Message ID | Message contents | 'Y' | 'B' |
 
 ## Team ID
 
@@ -16,7 +16,7 @@ title: Messages
 
 ## Messages Sent
 
-| Bytes | Byte 4 |
+| Bytes | Byte 5 |
 | ----- | ------ |
 | Variable Name | Motor Speed |
 | Variable Type | uint8_t |
