@@ -4,7 +4,7 @@ title: Messages
 
 ## Message Structure
 
-| Bytes | Byte 1 | Byte 4 | Byte 3 | Byte 4 | Byte 5 | Byte 6-x | Byte x+1 | Byte x+2 |
+| Bytes | Byte 1 | Byte 2 | Byte 3 | Byte 4 | Byte 5 | Byte 6-x | Byte x+1 | Byte x+2 |
 | ----- | ------ | ------ | ------ | ------ | ------ | -------- | -------- | -------- |
 | Contents | 'A' | 'Z' | sender ID | receiver ID | Message ID | Message contents | 'Y' | 'B' |
 
