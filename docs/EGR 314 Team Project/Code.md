@@ -218,4 +218,4 @@ int main(void)
 }
 '''
 
-![MPLabX Files](Messaging.X.zip)
+* [MPLabX Files](Messaging.X.zip)
