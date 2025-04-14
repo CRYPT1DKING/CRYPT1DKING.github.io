@@ -4,7 +4,7 @@ title: Code
 
 ## Code
 
-'''
+```C
 #include "mcc_generated_files/system/system.h"
 
 uint16_t ms=0;
@@ -216,6 +216,6 @@ int main(void)
         }
     }
 }
-'''
+```
 
 * [MPLabX Files](Messaging.X.zip)
