@@ -1,5 +1,5 @@
 ---
-title: Code
+title: Code/Resources
 ---
 
 ## Code
@@ -8,7 +8,7 @@ title: Code
 #include "mcc_generated_files/system/system.h"
 
 uint16_t ms=0;
-uint16_t sec=0;
+float sec=0;
 uint8_t send = 0;
 #define Angle_Address_1 0x0E
 #define Angle_Address_2 0x0F
@@ -16,25 +16,40 @@ uint8_t send = 0;
 uint8_t  b[2] = {0x0,0x0};
 uint8_t angleReg1 = Angle_Address_1;
 uint8_t angleReg2 = Angle_Address_2;
-float angle = 0.0f;
+uint8_t targetRPM = 0;
+uint8_t one = 1;
+uint8_t two = 2;
+int targetMode = 0;
+uint8_t angle = 0;
 float angleLast = 0.0f;
 int read = 0;
 
 void timer_callback(void)
 {
     ms++;
-    if (ms>1000) 
+    if (ms>500) 
     {
-        ms -= 1000;
-        sec++;
-        send++;
-        read = 1;
-        IO_RC1_Toggle();
+        ms -= 500;
+        if(targetMode == 1)
+        {
+            send=2;
+            read++;
+            IO_RC2_Toggle();
+        }
+        if(targetMode == 0)
+        {
+            send++;
+            read++;
+            if(send == 2)
+            {
+                IO_RC2_Toggle();
+            }
+        }
     }
 }
 
 uint8_t send_message(char * my_message){
-    printf("%s\n",my_message);
+    printf("%s",my_message);
     return 1;
 }
         
@@ -56,8 +71,11 @@ unsigned int buffer_last_ii = 0;
 unsigned int message_ii=0;
 unsigned int message_last_ii=0;
 unsigned int message_incoming=0;
-int messageType = 2;
+int messageType2 = 2;
+int messageType1 = 1;
 uint8_t rpm = 0;
+uint16_t raw_angle = 0;
+float delta_deg = 0.0;
 
 void fill_string(char * mystring,char value,unsigned int size){
     for (int ii=0;ii<size;ii++){
@@ -81,12 +99,22 @@ void handle_message(unsigned int ii){
     char f = message_in[3];
     if(f == 'c')
     {
-        printf("Message is for you\n");
-        //do something with it
+        
+        if(message_in[4] == 3)
+        {
+            targetRPM=message_in[5];
+            if(targetRPM>0)
+            {
+                targetMode = 1;
+            }
+            if(targetRPM==0)
+            {
+                targetMode = 0;
+            }
+        }
     }
     else if(f == 'X')
     {
-        printf("Broadcast Message\n");
         send_message(message_in);
         return;
         //return broadcast
@@ -96,7 +124,6 @@ void handle_message(unsigned int ii){
         send_message(message_in);
         return;
     }
-    printf("nobody should be sending to you\n");
 }
 
 
@@ -110,6 +137,8 @@ int main(void)
     
     uint16_t ms_last=0;
     uint16_t sec_last=0;
+    uint16_t adc_value;
+    float voltage;
     SYSTEM_Initialize();
     INTERRUPT_GlobalInterruptEnable(); 
     INTERRUPT_PeripheralInterruptEnable(); 
@@ -148,7 +177,7 @@ int main(void)
                     d = message_in[message_ii];
                     result= find_char(team_ids,d,TEAMSIZE);
                     if (result==0){
-                        printf("AZbaPIC: sender not in teamYB\n");
+                        //printf("AZbaPIC: sender not in teamYB\n");
                         message_incoming = 0;
                         message_ii=0;
                     } else {
@@ -160,7 +189,7 @@ int main(void)
                     char d=0;
                     d = message_in[message_ii];
                     if (d=='c'){
-                        printf("AZbaPIC: sender is yourselfYB\n");
+                        //printf("AZbaPIC: sender is yourselfYB\n");
                         message_incoming = 0;
                         message_ii=0;
                     } else {
@@ -172,8 +201,8 @@ int main(void)
                     char d=0;
                     d = message_in[message_ii];
                     result= find_char(team_ids,d,TEAMSIZE);
-                    if (result==0){
-                        printf("AZbaPIC: receiver not in teamYB\n");
+                    if (result==0){ 
+                        //printf("AZbaPIC: receiver not in teamYB\n");
                         message_incoming = 0;
                         message_ii=0;
                     } else {
@@ -183,7 +212,7 @@ int main(void)
                 message_last_ii= message_ii;
                 message_ii = message_ii+1;
                 if (message_ii<MSGTESTSIZE){} else{
-                    printf("AZbaPIC: message too large. deletingYB\n");
+                    //printf("AZbaPIC: message too large. deletingYB\n");
                     message_incoming=0;
                     message_ii=0;
                 }
@@ -193,7 +222,7 @@ int main(void)
         }
         sec_last = sec;
         ms_last = ms;
-        if(read == 1)
+        if (read == 1)
         {
             angleLast = angle;
 
@@ -204,14 +233,71 @@ int main(void)
             uint16_t raw_angle = ((b[0] & 0x0F) << 8) | b[1];
             angle = ((float)raw_angle * 360.0f) / 4096.0f;
 
-            float delta_deg = angle - angleLast;
+            // Handle angle wraparound
+            if (angle - angleLast > 180.0f) {
+                delta_deg = angle - 360.0f - angleLast;
+            } else if (angle - angleLast < -180.0f) {
+                delta_deg = 360.0f + angle - angleLast;
+            } else {
+                delta_deg = angle - angleLast;
+            }
 
-            rpm = (delta_deg / 360.0f) * 60.0f;
+            // Check if the angle change is too small for RPM calculation
+            if (delta_deg < 0.1f && delta_deg > -0.1f) {
+                rpm = 0;  // Set RPM to 0 if the change is too small
+            } else {
+                rpm = (delta_deg / 360.0f) * 60.0f;
+            }
+
+            // Clamp RPM to uint8_t range [0, 255]
+            if (rpm < 0) {
+                rpm = 0;  // Clamp to 0 if RPM is negative
+            }
+            if (rpm > 255) {
+                rpm = 255;  // Clamp to 255 if RPM is greater than 255
+            }
+
+            // Cast to uint8_t
+            rpm = (uint8_t)rpm;
+
             read = 0;
         }
-        if(send == 1)
+        if(send == 2)
         {
-            printf("AZcX%d%dYB",messageType,rpm);
+            printf("AZcX");
+            __delay_ms(5);
+            EUSART1_Write(messageType2);
+            __delay_ms(5);
+            EUSART1_Write(rpm);
+            __delay_ms(5);
+            printf("YB");
+            __delay_ms(5);
+            
+            if(targetMode == 1)
+            {
+                if(rpm<targetRPM)
+                {
+                    printf("AZcX");
+                    __delay_ms(5);
+                    EUSART1_Write(messageType1);
+                    __delay_ms(5);
+                    EUSART1_Write(one);
+                    __delay_ms(5);
+                    printf("YB");
+                    __delay_ms(5);
+                }
+                if(rpm>targetRPM)
+                {
+                    printf("AZcX");
+                    __delay_ms(5);
+                    EUSART1_Write(messageType1);
+                    __delay_ms(5);
+                    EUSART1_Write(two);
+                    __delay_ms(5);
+                    printf("YB");
+                    __delay_ms(5);
+                }
+            }
             send = 0;
         }
     }
