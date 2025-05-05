@@ -379,7 +379,7 @@
         
   
   <span class="md-ellipsis">
-    Code
+    Code/Resources
   </span>
   
 
@@ -478,8 +478,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#only-receiving-broadcast-messages" class="md-nav__link">
-    Only receiving broadcast messages
+  <a href="#messages-recieved" class="md-nav__link">
+    Messages Recieved
   </a>
   
 </li>
@@ -606,8 +606,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#only-receiving-broadcast-messages" class="md-nav__link">
-    Only receiving broadcast messages
+  <a href="#messages-recieved" class="md-nav__link">
+    Messages Recieved
   </a>
   
 </li>
@@ -644,9 +644,9 @@
 <th>Bytes</th>
 <th>Byte 1</th>
 <th>Byte 2</th>
-<th>Byte 3</th>
-<th>Byte 4</th>
-<th>Byte 5</th>
+<th>Byte 3 (char)</th>
+<th>Byte 4 (char)</th>
+<th>Byte 5 (int8)</th>
 <th>Byte 6-x</th>
 <th>Byte x+1</th>
 <th>Byte x+2</th>
@@ -697,6 +697,10 @@
 </thead>
 <tbody>
 <tr>
+<td>Message ID</td>
+<td>2</td>
+</tr>
+<tr>
 <td>Variable Name</td>
 <td>Motor Speed</td>
 </tr>
@@ -710,7 +714,7 @@
 </tr>
 <tr>
 <td>Max Value</td>
-<td>127</td>
+<td>100</td>
 </tr>
 <tr>
 <td>Example</td>
@@ -718,7 +722,41 @@
 </tr>
 </tbody>
 </table>
-<h2 id="only-receiving-broadcast-messages">Only receiving broadcast messages</h2>
+<h2 id="messages-recieved">Messages Recieved</h2>
+<table>
+<thead>
+<tr>
+<th>Bytes</th>
+<th>Byte 5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Message ID</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Variable Name</td>
+<td>Target RPM</td>
+</tr>
+<tr>
+<td>Variable Type</td>
+<td>uint8_t</td>
+</tr>
+<tr>
+<td>Min Value</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Max Value</td>
+<td>100</td>
+</tr>
+<tr>
+<td>Example</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
 
 
 

@@ -379,7 +379,7 @@
         
   
   <span class="md-ellipsis">
-    Code
+    Code/Resources
   </span>
   
 
@@ -481,11 +481,31 @@
     Schematic
   </a>
   
+    <nav class="md-nav" aria-label="Schematic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schematic-design" class="md-nav__link">
+    Schematic Design
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
   <a href="#pcb" class="md-nav__link">
     PCB
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-20" class="md-nav__link">
+    Version 2.0
   </a>
   
 </li>
@@ -575,11 +595,31 @@
     Schematic
   </a>
   
+    <nav class="md-nav" aria-label="Schematic">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schematic-design" class="md-nav__link">
+    Schematic Design
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
   <a href="#pcb" class="md-nav__link">
     PCB
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-20" class="md-nav__link">
+    Version 2.0
   </a>
   
 </li>
@@ -611,6 +651,8 @@
 
 <h2 id="schematic">Schematic</h2>
 <p><a class="glightbox" href="../Whipple%20Schematic.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Schematic" src="../Whipple%20Schematic.png" /></a></p>
+<h3 id="schematic-design">Schematic Design</h3>
+<p>The main functionality of this board is reading the hall effect sensor, processing the information, and sending it to the rest of the team. The sensor communicates via I2C so all lines utilizing that communication have pull up resistors to help reset them. The switching regulator provides a constant 3.3V to the whole board which all components need to operate. It gets the main power either from the barrel jack or from the team via the header which can be swapped to via the jumper. The ICSP is there to make changes to code as needed if any bugs or problems arise. Since the board only needed to read in the sensor and send and receive information, the design was kept rather simplistic to reduce the cost and amount of trouble points where things could go wrong.</p>
 <ul>
 <li><a href="../WhippleScehmatic.zip">Schemtaic Folder</a></li>
 </ul>
@@ -620,6 +662,8 @@
 <li><a href="../WhippleEGR314SoloBoard.zip">PCB Folder</a></li>
 </ul>
 <p><a class="glightbox" href="../BillofMaterials.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="BOM" src="../BillofMaterials.png" /></a></p>
+<h2 id="version-20">Version 2.0</h2>
+<p>Most of the improvements I would make to the board would be mainly spacing issues on the PCB layout. The placement of my ICSP pins had an annoying issue where I could not have it plugged in while the 8-pin ribbon cable was plugged in. Aside from that, adding some more GPIO pins the can be used and added to if need be would have helped, both for debugging purposes and for future use of the board if I wanted to expand the functionality of it. Other than that there really is no changes I would have made to the design or board. Everything worked as soon as it was connected to the board and there was no issue coding or testing all the functionality of it.</p>
 
 
 

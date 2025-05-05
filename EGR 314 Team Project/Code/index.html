@@ -29,7 +29,7 @@
 
     
       
-        <title>Code - Tyler Whipple Projects</title>
+        <title>Code/Resources - Tyler Whipple Projects</title>
       
     
     
@@ -128,7 +128,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Code
+              Code/Resources
             
           </span>
         </div>
@@ -386,7 +386,7 @@
           
   
   <span class="md-ellipsis">
-    Code
+    Code/Resources
   </span>
   
 
@@ -397,7 +397,7 @@
         
   
   <span class="md-ellipsis">
-    Code
+    Code/Resources
   </span>
   
 
@@ -593,13 +593,13 @@
   
 
 
-  <h1>Code</h1>
+  <h1>Code/Resources</h1>
 
 <h2 id="code">Code</h2>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;mcc_generated_files/system/system.h&quot;</span>
 
 <span class="kt">uint16_t</span><span class="w"> </span><span class="n">ms</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">uint16_t</span><span class="w"> </span><span class="n">sec</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">sec</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 <span class="kt">uint8_t</span><span class="w"> </span><span class="n">send</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="cp">#define Angle_Address_1 0x0E</span>
 <span class="cp">#define Angle_Address_2 0x0F</span>
@@ -607,25 +607,40 @@
 <span class="kt">uint8_t</span><span class="w">  </span><span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mh">0x0</span><span class="p">,</span><span class="mh">0x0</span><span class="p">};</span>
 <span class="kt">uint8_t</span><span class="w"> </span><span class="n">angleReg1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Angle_Address_1</span><span class="p">;</span>
 <span class="kt">uint8_t</span><span class="w"> </span><span class="n">angleReg2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Angle_Address_2</span><span class="p">;</span>
-<span class="kt">float</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+<span class="kt">uint8_t</span><span class="w"> </span><span class="n">targetRPM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="kt">uint8_t</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">uint8_t</span><span class="w"> </span><span class="n">two</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">targetMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="kt">uint8_t</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="kt">float</span><span class="w"> </span><span class="n">angleLast</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
 <span class="kt">int</span><span class="w"> </span><span class="n">read</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 
 <span class="kt">void</span><span class="w"> </span><span class="nf">timer_callback</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 <span class="p">{</span>
 <span class="w">    </span><span class="n">ms</span><span class="o">++</span><span class="p">;</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ms</span><span class="o">&gt;</span><span class="mi">1000</span><span class="p">)</span><span class="w"> </span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ms</span><span class="o">&gt;</span><span class="mi">500</span><span class="p">)</span><span class="w"> </span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">ms</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span>
-<span class="w">        </span><span class="n">sec</span><span class="o">++</span><span class="p">;</span>
-<span class="w">        </span><span class="n">send</span><span class="o">++</span><span class="p">;</span>
-<span class="w">        </span><span class="n">read</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="w">        </span><span class="n">IO_RC1_Toggle</span><span class="p">();</span>
+<span class="w">        </span><span class="n">ms</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">500</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">targetMode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">send</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span>
+<span class="w">            </span><span class="n">read</span><span class="o">++</span><span class="p">;</span>
+<span class="w">            </span><span class="n">IO_RC2_Toggle</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">targetMode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">send</span><span class="o">++</span><span class="p">;</span>
+<span class="w">            </span><span class="n">read</span><span class="o">++</span><span class="p">;</span>
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">send</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">IO_RC2_Toggle</span><span class="p">();</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 
 <span class="kt">uint8_t</span><span class="w"> </span><span class="nf">send_message</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">my_message</span><span class="p">){</span>
-<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">my_message</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span><span class="n">my_message</span><span class="p">);</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 <span class="p">}</span>
 
@@ -647,8 +662,11 @@
 <span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">message_ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 <span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">message_last_ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 <span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">message_incoming</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">int</span><span class="w"> </span><span class="n">messageType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">messageType2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">messageType1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 <span class="kt">uint8_t</span><span class="w"> </span><span class="n">rpm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="kt">uint16_t</span><span class="w"> </span><span class="n">raw_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">delta_deg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
 
 <span class="kt">void</span><span class="w"> </span><span class="nf">fill_string</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mystring</span><span class="p">,</span><span class="kt">char</span><span class="w"> </span><span class="n">value</span><span class="p">,</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">){</span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">ii</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">ii</span><span class="o">++</span><span class="p">){</span>
@@ -672,12 +690,22 @@
 <span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">message_in</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
 <span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;c&#39;</span><span class="p">)</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Message is for you</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-<span class="w">        </span><span class="c1">//do something with it</span>
+
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">message_in</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">targetRPM</span><span class="o">=</span><span class="n">message_in</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">targetRPM</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">targetMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">targetRPM</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="n">targetMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;X&#39;</span><span class="p">)</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Broadcast Message</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
 <span class="w">        </span><span class="n">send_message</span><span class="p">(</span><span class="n">message_in</span><span class="p">);</span>
 <span class="w">        </span><span class="k">return</span><span class="p">;</span>
 <span class="w">        </span><span class="c1">//return broadcast</span>
@@ -687,7 +715,6 @@
 <span class="w">        </span><span class="n">send_message</span><span class="p">(</span><span class="n">message_in</span><span class="p">);</span>
 <span class="w">        </span><span class="k">return</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;nobody should be sending to you</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 
 
@@ -701,6 +728,8 @@
 
 <span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">ms_last</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 <span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">sec_last</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">adc_value</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">voltage</span><span class="p">;</span>
 <span class="w">    </span><span class="n">SYSTEM_Initialize</span><span class="p">();</span>
 <span class="w">    </span><span class="n">INTERRUPT_GlobalInterruptEnable</span><span class="p">();</span><span class="w"> </span>
 <span class="w">    </span><span class="n">INTERRUPT_PeripheralInterruptEnable</span><span class="p">();</span><span class="w"> </span>
@@ -739,7 +768,7 @@
 <span class="w">                    </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">message_in</span><span class="p">[</span><span class="n">message_ii</span><span class="p">];</span>
 <span class="w">                    </span><span class="n">result</span><span class="o">=</span><span class="w"> </span><span class="n">find_char</span><span class="p">(</span><span class="n">team_ids</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">TEAMSIZE</span><span class="p">);</span>
 <span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
-<span class="w">                        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;AZbaPIC: sender not in teamYB</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">                        </span><span class="c1">//printf(&quot;AZbaPIC: sender not in teamYB\n&quot;);</span>
 <span class="w">                        </span><span class="n">message_incoming</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="w">                        </span><span class="n">message_ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 <span class="w">                    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
@@ -751,7 +780,7 @@
 <span class="w">                    </span><span class="kt">char</span><span class="w"> </span><span class="n">d</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 <span class="w">                    </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">message_in</span><span class="p">[</span><span class="n">message_ii</span><span class="p">];</span>
 <span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="o">==</span><span class="sc">&#39;c&#39;</span><span class="p">){</span>
-<span class="w">                        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;AZbaPIC: sender is yourselfYB</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">                        </span><span class="c1">//printf(&quot;AZbaPIC: sender is yourselfYB\n&quot;);</span>
 <span class="w">                        </span><span class="n">message_incoming</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="w">                        </span><span class="n">message_ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 <span class="w">                    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
@@ -763,8 +792,8 @@
 <span class="w">                    </span><span class="kt">char</span><span class="w"> </span><span class="n">d</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 <span class="w">                    </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">message_in</span><span class="p">[</span><span class="n">message_ii</span><span class="p">];</span>
 <span class="w">                    </span><span class="n">result</span><span class="o">=</span><span class="w"> </span><span class="n">find_char</span><span class="p">(</span><span class="n">team_ids</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">TEAMSIZE</span><span class="p">);</span>
-<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
-<span class="w">                        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;AZbaPIC: receiver not in teamYB</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span><span class="w"> </span>
+<span class="w">                        </span><span class="c1">//printf(&quot;AZbaPIC: receiver not in teamYB\n&quot;);</span>
 <span class="w">                        </span><span class="n">message_incoming</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="w">                        </span><span class="n">message_ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 <span class="w">                    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
@@ -774,7 +803,7 @@
 <span class="w">                </span><span class="n">message_last_ii</span><span class="o">=</span><span class="w"> </span><span class="n">message_ii</span><span class="p">;</span>
 <span class="w">                </span><span class="n">message_ii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">message_ii</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
 <span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">message_ii</span><span class="o">&lt;</span><span class="n">MSGTESTSIZE</span><span class="p">){}</span><span class="w"> </span><span class="k">else</span><span class="p">{</span>
-<span class="w">                    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;AZbaPIC: message too large. deletingYB</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">                    </span><span class="c1">//printf(&quot;AZbaPIC: message too large. deletingYB\n&quot;);</span>
 <span class="w">                    </span><span class="n">message_incoming</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 <span class="w">                    </span><span class="n">message_ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 <span class="w">                </span><span class="p">}</span>
@@ -784,7 +813,7 @@
 <span class="w">        </span><span class="p">}</span>
 <span class="w">        </span><span class="n">sec_last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sec</span><span class="p">;</span>
 <span class="w">        </span><span class="n">ms_last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ms</span><span class="p">;</span>
-<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">read</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">read</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
 <span class="w">        </span><span class="p">{</span>
 <span class="w">            </span><span class="n">angleLast</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angle</span><span class="p">;</span>
 
@@ -795,14 +824,71 @@
 <span class="w">            </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">raw_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x0F</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
 <span class="w">            </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="kt">float</span><span class="p">)</span><span class="n">raw_angle</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">360.0f</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">4096.0f</span><span class="p">;</span>
 
-<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">delta_deg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">angleLast</span><span class="p">;</span>
+<span class="w">            </span><span class="c1">// Handle angle wraparound</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">angle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">angleLast</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">180.0f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">delta_deg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">360.0f</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">angleLast</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">angle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">angleLast</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">-180.0f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">delta_deg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">360.0f</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">angleLast</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">delta_deg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">angleLast</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
 
-<span class="w">            </span><span class="n">rpm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">delta_deg</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">360.0f</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">60.0f</span><span class="p">;</span>
+<span class="w">            </span><span class="c1">// Check if the angle change is too small for RPM calculation</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">delta_deg</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.1f</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">delta_deg</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">-0.1f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">rpm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// Set RPM to 0 if the change is too small</span>
+<span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">rpm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">delta_deg</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">360.0f</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">60.0f</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="c1">// Clamp RPM to uint8_t range [0, 255]</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rpm</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">rpm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// Clamp to 0 if RPM is negative</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rpm</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">rpm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">255</span><span class="p">;</span><span class="w">  </span><span class="c1">// Clamp to 255 if RPM is greater than 255</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="c1">// Cast to uint8_t</span>
+<span class="w">            </span><span class="n">rpm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">rpm</span><span class="p">;</span>
+
 <span class="w">            </span><span class="n">read</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">send</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">send</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;AZcX%d%dYB&quot;</span><span class="p">,</span><span class="n">messageType</span><span class="p">,</span><span class="n">rpm</span><span class="p">);</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;AZcX&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="w">            </span><span class="n">EUSART1_Write</span><span class="p">(</span><span class="n">messageType2</span><span class="p">);</span>
+<span class="w">            </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="w">            </span><span class="n">EUSART1_Write</span><span class="p">(</span><span class="n">rpm</span><span class="p">);</span>
+<span class="w">            </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;YB&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">targetMode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="p">(</span><span class="n">rpm</span><span class="o">&lt;</span><span class="n">targetRPM</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;AZcX&quot;</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">EUSART1_Write</span><span class="p">(</span><span class="n">messageType1</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">EUSART1_Write</span><span class="p">(</span><span class="n">one</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;YB&quot;</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">                </span><span class="k">if</span><span class="p">(</span><span class="n">rpm</span><span class="o">&gt;</span><span class="n">targetRPM</span><span class="p">)</span>
+<span class="w">                </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;AZcX&quot;</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">EUSART1_Write</span><span class="p">(</span><span class="n">messageType1</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">EUSART1_Write</span><span class="p">(</span><span class="n">two</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;YB&quot;</span><span class="p">);</span>
+<span class="w">                    </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
 <span class="w">            </span><span class="n">send</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
