@@ -47,3 +47,6 @@ All of the components that were chosen were selected for they're familiarity and
 ## Power Budget
 
 ![PowerBudget](PowerBudget.png)
+
+### Final Power
+As my power budget shows the whole system, even when running everything at full power, requires very little to operate. This lets the board be powered primarily by the team as what excess power they provide is plenty for my board to operate.
