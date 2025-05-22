@@ -10,3 +10,5 @@ tags:
 This is the page for my 6 degree of freedom arm I build for my EGR 456 final project.<br>
 The initial purpose of the arm was to incorporate jacobian path-finding.<br>
 The future plans for this robot is to add "controllers" so that I can independently control the direction of motion.<br>
+
+![Arm](ARM.jpg)
