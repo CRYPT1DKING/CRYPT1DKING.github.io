@@ -5,7 +5,7 @@ title: Code
 ## Code
 
 ```python
-rom machine import Pin, PWM
+from machine import Pin, PWM
 import math
 from ulab import numpy as np
 from time import sleep_ms
