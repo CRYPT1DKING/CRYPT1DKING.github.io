@@ -22,7 +22,7 @@ For the shoulder joints I learned they needed a much higher torque rated servo t
 
 ## Structure
 
-![arm](ARM)
+![arm](ARM.jpg)
 [Link](https://makerworld.com/en/models/1179355-6dof-robot-arm-modular-cheap-educational?from=search)
 
 ### 3D model
