@@ -698,214 +698,214 @@
   <h1>Code</h1>
 
 <h2 id="code">Code</h2>
-<div class="highlight"><pre><span></span><code><span class="n">rom</span> <span class="n">machine</span> <span class="kn">import</span> <span class="nn">Pin</span><span class="o">,</span> <span class="nn">PWM</span>
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">ulab</span> <span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep_ms</span>
+<pre><code class="language-python">rom machine import Pin, PWM
+import math
+from ulab import numpy as np
+from time import sleep_ms
 
-<span class="c1"># --- Servo Setup ---</span>
-<span class="n">servo1</span> <span class="o">=</span> <span class="n">PWM</span><span class="p">(</span><span class="n">Pin</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">freq</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">servo2</span> <span class="o">=</span> <span class="n">PWM</span><span class="p">(</span><span class="n">Pin</span><span class="p">(</span><span class="mi">18</span><span class="p">),</span> <span class="n">freq</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">servo3</span> <span class="o">=</span> <span class="n">PWM</span><span class="p">(</span><span class="n">Pin</span><span class="p">(</span><span class="mi">19</span><span class="p">),</span> <span class="n">freq</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">servo4</span> <span class="o">=</span> <span class="n">PWM</span><span class="p">(</span><span class="n">Pin</span><span class="p">(</span><span class="mi">21</span><span class="p">),</span> <span class="n">freq</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">servo5</span> <span class="o">=</span> <span class="n">PWM</span><span class="p">(</span><span class="n">Pin</span><span class="p">(</span><span class="mi">22</span><span class="p">),</span> <span class="n">freq</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">servo6</span> <span class="o">=</span> <span class="n">PWM</span><span class="p">(</span><span class="n">Pin</span><span class="p">(</span><span class="mi">23</span><span class="p">),</span> <span class="n">freq</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+# --- Servo Setup ---
+servo1 = PWM(Pin(5), freq=50)
+servo2 = PWM(Pin(18), freq=50)
+servo3 = PWM(Pin(19), freq=50)
+servo4 = PWM(Pin(21), freq=50)
+servo5 = PWM(Pin(22), freq=50)
+servo6 = PWM(Pin(23), freq=50)
 
-<span class="k">def</span> <span class="nf">angle_to_us_servo1</span><span class="p">(</span><span class="n">angle</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mi">600</span> <span class="o">+</span> <span class="p">(</span><span class="n">angle</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2500</span> <span class="o">-</span> <span class="mi">600</span><span class="p">)</span>
+def angle_to_us_servo1(angle):
+    return 600 + (angle / 180) * (2500 - 600)
 
-<span class="k">def</span> <span class="nf">angle_to_us_servo2</span><span class="p">(</span><span class="n">angle</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mi">500</span> <span class="o">+</span> <span class="p">((</span><span class="mi">180</span> <span class="o">-</span> <span class="n">angle</span><span class="p">)</span> <span class="o">/</span> <span class="mi">270</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2500</span> <span class="o">-</span> <span class="mi">500</span><span class="p">)</span>
+def angle_to_us_servo2(angle):
+    return 500 + ((180 - angle) / 270) * (2500 - 500)
 
-<span class="k">def</span> <span class="nf">angle_to_us_servo3</span><span class="p">(</span><span class="n">angle</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mi">500</span> <span class="o">+</span> <span class="p">((</span><span class="n">angle</span> <span class="o">+</span> <span class="mi">135</span><span class="p">)</span> <span class="o">/</span> <span class="mi">270</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2500</span> <span class="o">-</span> <span class="mi">500</span><span class="p">)</span>
+def angle_to_us_servo3(angle):
+    return 500 + ((angle + 135) / 270) * (2500 - 500)
 
-<span class="k">def</span> <span class="nf">angle_to_us_servo4</span><span class="p">(</span><span class="n">angle</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mi">500</span> <span class="o">+</span> <span class="p">((</span><span class="n">angle</span> <span class="o">+</span> <span class="mi">90</span><span class="p">)</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2400</span> <span class="o">-</span> <span class="mi">500</span><span class="p">)</span>
+def angle_to_us_servo4(angle):
+    return 500 + ((angle + 90) / 180) * (2400 - 500)
 
-<span class="k">def</span> <span class="nf">angle_to_us_servo5</span><span class="p">(</span><span class="n">angle</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mi">500</span> <span class="o">+</span> <span class="p">((</span><span class="n">angle</span> <span class="o">+</span> <span class="mi">90</span><span class="p">)</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2380</span> <span class="o">-</span> <span class="mi">500</span><span class="p">)</span>
+def angle_to_us_servo5(angle):
+    return 500 + ((angle + 90) / 180) * (2380 - 500)
 
-<span class="k">def</span> <span class="nf">angle_to_us_servo6</span><span class="p">(</span><span class="n">angle</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mi">590</span> <span class="o">+</span> <span class="p">((</span><span class="n">angle</span> <span class="o">+</span> <span class="mi">90</span><span class="p">)</span> <span class="o">/</span> <span class="mi">180</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2410</span> <span class="o">-</span> <span class="mi">590</span><span class="p">)</span>
+def angle_to_us_servo6(angle):
+    return 590 + ((angle + 90) / 180) * (2410 - 590)
 
-<span class="k">def</span> <span class="nf">us_to_duty</span><span class="p">(</span><span class="n">us</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">int</span><span class="p">((</span><span class="n">us</span> <span class="o">/</span> <span class="mi">20000</span><span class="p">)</span> <span class="o">*</span> <span class="mi">65535</span><span class="p">)</span>
+def us_to_duty(us):
+    return int((us / 20000) * 65535)
 
-<span class="k">def</span> <span class="nf">move_servo</span><span class="p">(</span><span class="n">servo</span><span class="p">,</span> <span class="n">angle_fn</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
-    <span class="n">duty</span> <span class="o">=</span> <span class="n">us_to_duty</span><span class="p">(</span><span class="n">angle_fn</span><span class="p">(</span><span class="n">angle</span><span class="p">))</span>
-    <span class="n">servo</span><span class="o">.</span><span class="n">duty_u16</span><span class="p">(</span><span class="n">duty</span><span class="p">)</span>
+def move_servo(servo, angle_fn, angle):
+    duty = us_to_duty(angle_fn(angle))
+    servo.duty_u16(duty)
 
-<span class="c1"># --- Robot Arm Geometry ---</span>
-<span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mf">9.5</span><span class="p">,</span> <span class="mf">17.0</span><span class="p">,</span> <span class="mf">17.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">]</span>  <span class="c1"># Arm segment lengths</span>
+# --- Robot Arm Geometry ---
+a = [9.5, 17.0, 17.0, 6.0, 6.0, 3.0]  # Arm segment lengths
 
-<span class="c1"># --- Inverse Kinematics Function ---</span>
-<span class="k">def</span> <span class="nf">inverse_kinematics</span><span class="p">(</span><span class="n">target_position</span><span class="p">):</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">target_position</span>
+# --- Inverse Kinematics Function ---
+def inverse_kinematics(target_position):
+    x, y, z = target_position
 
-    <span class="c1"># --- Solve for the first three joints (theta1, theta2, theta3) ---</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Planar distance (ignore z for now)</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">r</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    # --- Solve for the first three joints (theta1, theta2, theta3) ---
+    r = math.sqrt(x**2 + y**2)  # Planar distance (ignore z for now)
+    d = math.sqrt((r - a[3])**2 + z**2)
 
-    <span class="c1"># Solving for theta1 (base rotation angle)</span>
-    <span class="n">theta1</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    # Solving for theta1 (base rotation angle)
+    theta1 = math.atan2(y, x)
 
-    <span class="c1"># Solve for theta2 (shoulder joint)</span>
-    <span class="n">cos_theta2</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-    <span class="n">sin_theta2</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cos_theta2</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">theta2</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">sin_theta2</span><span class="p">,</span> <span class="n">cos_theta2</span><span class="p">)</span>
+    # Solve for theta2 (shoulder joint)
+    cos_theta2 = (d**2 - a[1]**2 - a[2]**2) / (2 * a[1] * a[2])
+    sin_theta2 = math.sqrt(1 - cos_theta2**2)
+    theta2 = math.atan2(sin_theta2, cos_theta2)
 
-    <span class="c1"># Solve for theta3 (elbow joint)</span>
-    <span class="n">theta3</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">r</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    # Solve for theta3 (elbow joint)
+    theta3 = math.atan2(z, r - a[3])
 
-    <span class="c1"># For simplicity, we&#39;ll assume no end-effector orientation (theta4, theta5, theta6 are zeros for now)</span>
-    <span class="n">theta4</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">theta5</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">theta6</span> <span class="o">=</span> <span class="mi">0</span>
+    # For simplicity, we'll assume no end-effector orientation (theta4, theta5, theta6 are zeros for now)
+    theta4 = 0
+    theta5 = 0
+    theta6 = 0
 
-    <span class="c1"># Return calculated angles</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">theta1</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">theta2</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">theta3</span><span class="p">),</span> <span class="n">theta4</span><span class="p">,</span> <span class="n">theta5</span><span class="p">,</span> <span class="n">theta6</span><span class="p">]</span>
+    # Return calculated angles
+    return [math.degrees(theta1), math.degrees(theta2), math.degrees(theta3), theta4, theta5, theta6]
 
-<span class="c1"># --- Robot Arm Kinematics Functions ---</span>
-<span class="k">def</span> <span class="nf">dh_matrix</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
-    <span class="n">theta</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-        <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="n">r</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)],</span>
-        <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span>  <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="n">r</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)],</span>
-        <span class="p">[</span><span class="mi">0</span><span class="p">,</span>               <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span>                 <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span>                 <span class="n">d</span><span class="p">],</span>
-        <span class="p">[</span><span class="mi">0</span><span class="p">,</span>               <span class="mi">0</span><span class="p">,</span>                               <span class="mi">0</span><span class="p">,</span>                               <span class="mi">1</span><span class="p">]</span>
-    <span class="p">])</span>
+# --- Robot Arm Kinematics Functions ---
+def dh_matrix(theta, alpha, r, d):
+    theta = math.radians(theta)
+    alpha = math.radians(alpha)
+    return np.array([
+        [math.cos(theta), -math.sin(theta)*math.cos(alpha), math.sin(theta)*math.sin(alpha), r*math.cos(theta)],
+        [math.sin(theta),  math.cos(theta)*math.cos(alpha), -math.cos(theta)*math.sin(alpha), r*math.sin(theta)],
+        [0,               math.sin(alpha),                 math.cos(alpha),                 d],
+        [0,               0,                               0,                               1]
+    ])
 
-<span class="k">def</span> <span class="nf">forward_kinematics</span><span class="p">(</span><span class="n">thetas</span><span class="p">):</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">]]</span>
-    <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
-        <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">dh_matrix</span><span class="p">(</span><span class="n">thetas</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
-    <span class="k">return</span> <span class="n">T</span>
+def forward_kinematics(thetas):
+    alpha = [90, 0, 0, 90, 90, 0]
+    r = [0, a[1], a[2], 0, 0, 0]
+    d = [a[0], 0, 0, -a[3], a[4], a[5]]
+    T = np.eye(4)
+    for i in range(6):
+        T = np.dot(T, dh_matrix(thetas[i], alpha[i], r[i], d[i]))
+    return T
 
-<span class="c1"># --- Jacobian Calculation ---</span>
-<span class="k">def</span> <span class="nf">compute_jacobian</span><span class="p">(</span><span class="n">thetas</span><span class="p">):</span>
-    <span class="n">alpha</span> <span class="o">=</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">]]</span>
+# --- Jacobian Calculation ---
+def compute_jacobian(thetas):
+    alpha = [90, 0, 0, 90, 90, 0]
+    r = [0, a[1], a[2], 0, 0, 0]
+    d = [a[0], 0, 0, -a[3], a[4], a[5]]
 
-    <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-    <span class="n">positions</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])]</span>
-    <span class="n">z_vectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
-        <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">dh_matrix</span><span class="p">(</span><span class="n">thetas</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
-        <span class="n">positions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]))</span>
-        <span class="n">z_vectors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]))</span>
+    T = np.eye(4)
+    positions = [np.array([0.0, 0.0, 0.0])]
+    z_vectors = [np.array([0.0, 0.0, 1.0])]
+    for i in range(6):
+        T = np.dot(T, dh_matrix(thetas[i], alpha[i], r[i], d[i]))
+        positions.append(np.array([T[0, 3], T[1, 3], T[2, 3]]))
+        z_vectors.append(np.array([T[0, 2], T[1, 2], T[2, 2]]))
 
-    <span class="n">J</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-    <span class="n">pe</span> <span class="o">=</span> <span class="n">positions</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="n">z_vectors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">pi</span> <span class="o">=</span> <span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">J</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">pe</span> <span class="o">-</span> <span class="n">pi</span><span class="p">)</span>
-        <span class="n">J</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
-    <span class="k">return</span> <span class="n">J</span>
+    J = np.zeros((6, 6))
+    pe = positions[-1]
+    for i in range(6):
+        z = z_vectors[i]
+        pi = positions[i]
+        J[0:3, i] = np.cross(z, pe - pi)
+        J[3:6, i] = z
+    return J
 
-<span class="c1"># --- Inverse Kinematics Step ---</span>
-<span class="k">def</span> <span class="nf">ik_velocity_step</span><span class="p">(</span><span class="n">thetas</span><span class="p">,</span> <span class="n">v_linear</span><span class="p">,</span> <span class="n">v_angular</span><span class="p">,</span> <span class="n">step_size</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
-    <span class="n">J</span> <span class="o">=</span> <span class="n">compute_jacobian</span><span class="p">(</span><span class="n">thetas</span><span class="p">)</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="c1"># Pseudo-inverse using (JᵀJ)⁻¹Jᵀ</span>
-        <span class="n">JT</span> <span class="o">=</span> <span class="n">J</span><span class="o">.</span><span class="n">T</span>
-        <span class="n">JTJ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">JT</span><span class="p">,</span> <span class="n">J</span><span class="p">)</span>
-        <span class="n">JTJ_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">JTJ</span><span class="p">)</span>
-        <span class="n">J_pinv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">JTJ_inv</span><span class="p">,</span> <span class="n">JT</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Jacobian inversion failed!&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">thetas</span>
+# --- Inverse Kinematics Step ---
+def ik_velocity_step(thetas, v_linear, v_angular, step_size=0.5):
+    J = compute_jacobian(thetas)
+    try:
+        # Pseudo-inverse using (JᵀJ)⁻¹Jᵀ
+        JT = J.T
+        JTJ = np.dot(JT, J)
+        JTJ_inv = np.linalg.inv(JTJ)
+        J_pinv = np.dot(JTJ_inv, JT)
+    except Exception:
+        print(&quot;Jacobian inversion failed!&quot;)
+        return thetas
 
-    <span class="c1"># Combine velocity vectors</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">v_linear</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">v_angular</span><span class="p">))</span>
-    <span class="n">delta_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">J_pinv</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    # Combine velocity vectors
+    v = np.array(list(v_linear) + list(v_angular))
+    delta_theta = np.dot(J_pinv, v)
 
-    <span class="n">new_thetas</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
-        <span class="n">theta</span> <span class="o">=</span> <span class="n">thetas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">step_size</span> <span class="o">*</span> <span class="n">delta_theta</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    new_thetas = []
+    for i in range(6):
+        theta = thetas[i] + math.degrees(step_size * delta_theta[i])
 
-        <span class="c1"># Apply range limits</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># Servo 1: 0–180°</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">theta</span> <span class="o">&lt;=</span> <span class="mi">180</span><span class="p">):</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Servo </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> angle </span><span class="si">{</span><span class="n">theta</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">° out of range [0, 180]! Stopping.&quot;</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">thetas</span>
-        <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Servo 2: -90–180°</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="o">-</span><span class="mi">90</span> <span class="o">&lt;=</span> <span class="n">theta</span> <span class="o">&lt;=</span> <span class="mi">180</span><span class="p">):</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Servo </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> angle </span><span class="si">{</span><span class="n">theta</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">° out of range [-90, 180]! Stopping.&quot;</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">thetas</span>
-        <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Servo 3: -135–135°</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="o">-</span><span class="mi">135</span> <span class="o">&lt;=</span> <span class="n">theta</span> <span class="o">&lt;=</span> <span class="mi">135</span><span class="p">):</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Servo </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> angle </span><span class="si">{</span><span class="n">theta</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">° out of range [-135, 135]! Stopping.&quot;</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">thetas</span>
-        <span class="k">else</span><span class="p">:</span>  <span class="c1"># Servo 4–6: -90–90°</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="o">-</span><span class="mi">90</span> <span class="o">&lt;=</span> <span class="n">theta</span> <span class="o">&lt;=</span> <span class="mi">90</span><span class="p">):</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Servo </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> angle </span><span class="si">{</span><span class="n">theta</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">° out of range [-90, 90]! Stopping.&quot;</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">thetas</span>
-        <span class="n">new_thetas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        # Apply range limits
+        if i == 0:  # Servo 1: 0–180°
+            if not (0 &lt;= theta &lt;= 180):
+                print(f&quot;Servo {i+1} angle {theta:.1f}° out of range [0, 180]! Stopping.&quot;)
+                return thetas
+        elif i == 1:  # Servo 2: -90–180°
+            if not (-90 &lt;= theta &lt;= 180):
+                print(f&quot;Servo {i+1} angle {theta:.1f}° out of range [-90, 180]! Stopping.&quot;)
+                return thetas
+        elif i == 2:  # Servo 3: -135–135°
+            if not (-135 &lt;= theta &lt;= 135):
+                print(f&quot;Servo {i+1} angle {theta:.1f}° out of range [-135, 135]! Stopping.&quot;)
+                return thetas
+        else:  # Servo 4–6: -90–90°
+            if not (-90 &lt;= theta &lt;= 90):
+                print(f&quot;Servo {i+1} angle {theta:.1f}° out of range [-90, 90]! Stopping.&quot;)
+                return thetas
+        new_thetas.append(theta)
 
-    <span class="k">return</span> <span class="n">new_thetas</span>
+    return new_thetas
 
 
-<span class="c1"># --- Main Loop ---</span>
-<span class="n">dt_ms</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">step_size</span> <span class="o">=</span> <span class="n">dt_ms</span> <span class="o">/</span> <span class="mi">1000</span>  <span class="c1"># = 0.1 seconds</span>
+# --- Main Loop ---
+dt_ms = 100
+step_size = dt_ms / 1000  # = 0.1 seconds
 
-<span class="c1"># Desired velocities (per second)</span>
-<span class="n">v_linear_per_sec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>       
-<span class="n">v_angular_per_sec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>      
+# Desired velocities (per second)
+v_linear_per_sec = np.array([5, -2, 1])       
+v_angular_per_sec = np.array([0, 0, 0])      
 
-<span class="n">target_position</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">])</span>  <span class="c1"># Example target position for the end-effector</span>
+target_position = np.array([10.0, 1.0, 15.0])  # Example target position for the end-effector
 
-<span class="c1"># Get initial joint angles for the target position using inverse kinematics</span>
-<span class="n">thetas</span> <span class="o">=</span> <span class="n">inverse_kinematics</span><span class="p">(</span><span class="n">target_position</span><span class="p">)</span><span class="c1">#[0.0,0.0,0.0,0.0,0.0,0.0]</span>
+# Get initial joint angles for the target position using inverse kinematics
+thetas = inverse_kinematics(target_position)#[0.0,0.0,0.0,0.0,0.0,0.0]
 
-<span class="c1"># Print initial angles</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initial joint angles from inverse kinematics:&quot;</span><span class="p">,</span> <span class="n">thetas</span><span class="p">)</span>
+# Print initial angles
+print(&quot;Initial joint angles from inverse kinematics:&quot;, thetas)
 
-<span class="c1"># Move servos to initial position</span>
-<span class="n">move_servo</span><span class="p">(</span><span class="n">servo1</span><span class="p">,</span> <span class="n">angle_to_us_servo1</span><span class="p">,</span> <span class="n">thetas</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">move_servo</span><span class="p">(</span><span class="n">servo2</span><span class="p">,</span> <span class="n">angle_to_us_servo2</span><span class="p">,</span> <span class="n">thetas</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">move_servo</span><span class="p">(</span><span class="n">servo3</span><span class="p">,</span> <span class="n">angle_to_us_servo3</span><span class="p">,</span> <span class="n">thetas</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-<span class="n">move_servo</span><span class="p">(</span><span class="n">servo4</span><span class="p">,</span> <span class="n">angle_to_us_servo4</span><span class="p">,</span> <span class="n">thetas</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-<span class="n">move_servo</span><span class="p">(</span><span class="n">servo5</span><span class="p">,</span> <span class="n">angle_to_us_servo5</span><span class="p">,</span> <span class="n">thetas</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
-<span class="n">move_servo</span><span class="p">(</span><span class="n">servo6</span><span class="p">,</span> <span class="n">angle_to_us_servo6</span><span class="p">,</span> <span class="n">thetas</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+# Move servos to initial position
+move_servo(servo1, angle_to_us_servo1, thetas[0])
+move_servo(servo2, angle_to_us_servo2, thetas[1])
+move_servo(servo3, angle_to_us_servo3, thetas[2])
+move_servo(servo4, angle_to_us_servo4, thetas[3])
+move_servo(servo5, angle_to_us_servo5, thetas[4])
+move_servo(servo6, angle_to_us_servo6, thetas[5])
 
-<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-    <span class="c1"># Scale velocities for current time step</span>
-    <span class="n">v_linear</span> <span class="o">=</span> <span class="n">v_linear_per_sec</span> <span class="o">*</span> <span class="n">step_size</span>
-    <span class="n">v_angular</span> <span class="o">=</span> <span class="n">v_angular_per_sec</span> <span class="o">*</span> <span class="n">step_size</span>
+while True:
+    # Scale velocities for current time step
+    v_linear = v_linear_per_sec * step_size
+    v_angular = v_angular_per_sec * step_size
 
-    <span class="c1"># Perform IK velocity step</span>
-    <span class="n">new_thetas</span> <span class="o">=</span> <span class="n">ik_velocity_step</span><span class="p">(</span><span class="n">thetas</span><span class="p">,</span> <span class="n">v_linear</span><span class="p">,</span> <span class="n">v_angular</span><span class="p">,</span> <span class="n">step_size</span><span class="p">)</span>
+    # Perform IK velocity step
+    new_thetas = ik_velocity_step(thetas, v_linear, v_angular, step_size)
 
-    <span class="c1"># Stop if no change</span>
-    <span class="k">if</span> <span class="n">new_thetas</span> <span class="o">==</span> <span class="n">thetas</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Motion stopped due to servo limit or Jacobian issue.&quot;</span><span class="p">)</span>
-        <span class="k">break</span>
+    # Stop if no change
+    if new_thetas == thetas:
+        print(&quot;Motion stopped due to servo limit or Jacobian issue.&quot;)
+        break
 
-    <span class="n">thetas</span> <span class="o">=</span> <span class="n">new_thetas</span>
+    thetas = new_thetas
 
-    <span class="c1"># Move servos to new angles</span>
-    <span class="n">move_servo</span><span class="p">(</span><span class="n">servo1</span><span class="p">,</span> <span class="n">angle_to_us_servo1</span><span class="p">,</span> <span class="n">thetas</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">move_servo</span><span class="p">(</span><span class="n">servo2</span><span class="p">,</span> <span class="n">angle_to_us_servo2</span><span class="p">,</span> <span class="n">thetas</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">move_servo</span><span class="p">(</span><span class="n">servo3</span><span class="p">,</span> <span class="n">angle_to_us_servo3</span><span class="p">,</span> <span class="n">thetas</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-    <span class="n">move_servo</span><span class="p">(</span><span class="n">servo4</span><span class="p">,</span> <span class="n">angle_to_us_servo4</span><span class="p">,</span> <span class="n">thetas</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-    <span class="n">move_servo</span><span class="p">(</span><span class="n">servo5</span><span class="p">,</span> <span class="n">angle_to_us_servo5</span><span class="p">,</span> <span class="n">thetas</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
-    <span class="n">move_servo</span><span class="p">(</span><span class="n">servo6</span><span class="p">,</span> <span class="n">angle_to_us_servo6</span><span class="p">,</span> <span class="n">thetas</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+    # Move servos to new angles
+    move_servo(servo1, angle_to_us_servo1, thetas[0])
+    move_servo(servo2, angle_to_us_servo2, thetas[1])
+    move_servo(servo3, angle_to_us_servo3, thetas[2])
+    move_servo(servo4, angle_to_us_servo4, thetas[3])
+    move_servo(servo5, angle_to_us_servo5, thetas[4])
+    move_servo(servo6, angle_to_us_servo6, thetas[5])
 
-    <span class="c1"># Print current end-effector position</span>
-    <span class="n">T</span> <span class="o">=</span> <span class="n">forward_kinematics</span><span class="p">(</span><span class="n">thetas</span><span class="p">)</span>
-    <span class="n">position</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;End-effector position:&quot;</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+    # Print current end-effector position
+    T = forward_kinematics(thetas)
+    position = T[0:3, 3]
+    print(&quot;End-effector position:&quot;, position)
 
-    <span class="n">sleep_ms</span><span class="p">(</span><span class="n">dt_ms</span><span class="p">)</span>
-</code></pre></div>
+    sleep_ms(dt_ms)
+</code></pre>
 
 
 

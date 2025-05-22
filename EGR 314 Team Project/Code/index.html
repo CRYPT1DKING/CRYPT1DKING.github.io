@@ -782,304 +782,304 @@
   <h1>Code/Resources</h1>
 
 <h2 id="code">Code</h2>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;mcc_generated_files/system/system.h&quot;</span>
+<pre><code class="language-C">#include &quot;mcc_generated_files/system/system.h&quot;
 
-<span class="kt">uint16_t</span><span class="w"> </span><span class="n">ms</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">float</span><span class="w"> </span><span class="n">sec</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">uint8_t</span><span class="w"> </span><span class="n">send</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="cp">#define Angle_Address_1 0x0E</span>
-<span class="cp">#define Angle_Address_2 0x0F</span>
-<span class="cp">#define Slave_Address 0x36</span>
-<span class="kt">uint8_t</span><span class="w">  </span><span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mh">0x0</span><span class="p">,</span><span class="mh">0x0</span><span class="p">};</span>
-<span class="kt">uint8_t</span><span class="w"> </span><span class="n">angleReg1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Angle_Address_1</span><span class="p">;</span>
-<span class="kt">uint8_t</span><span class="w"> </span><span class="n">angleReg2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Angle_Address_2</span><span class="p">;</span>
-<span class="kt">uint8_t</span><span class="w"> </span><span class="n">targetRPM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">uint8_t</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="kt">uint8_t</span><span class="w"> </span><span class="n">two</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
-<span class="kt">int</span><span class="w"> </span><span class="n">targetMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">uint8_t</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">float</span><span class="w"> </span><span class="n">angleLast</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
-<span class="kt">int</span><span class="w"> </span><span class="n">read</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+uint16_t ms=0;
+float sec=0;
+uint8_t send = 0;
+#define Angle_Address_1 0x0E
+#define Angle_Address_2 0x0F
+#define Slave_Address 0x36
+uint8_t  b[2] = {0x0,0x0};
+uint8_t angleReg1 = Angle_Address_1;
+uint8_t angleReg2 = Angle_Address_2;
+uint8_t targetRPM = 0;
+uint8_t one = 1;
+uint8_t two = 2;
+int targetMode = 0;
+uint8_t angle = 0;
+float angleLast = 0.0f;
+int read = 0;
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">timer_callback</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">    </span><span class="n">ms</span><span class="o">++</span><span class="p">;</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ms</span><span class="o">&gt;</span><span class="mi">500</span><span class="p">)</span><span class="w"> </span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">ms</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">500</span><span class="p">;</span>
-<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">targetMode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">send</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span>
-<span class="w">            </span><span class="n">read</span><span class="o">++</span><span class="p">;</span>
-<span class="w">            </span><span class="n">IO_RC2_Toggle</span><span class="p">();</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">targetMode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">send</span><span class="o">++</span><span class="p">;</span>
-<span class="w">            </span><span class="n">read</span><span class="o">++</span><span class="p">;</span>
-<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">send</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="n">IO_RC2_Toggle</span><span class="p">();</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
+void timer_callback(void)
+{
+    ms++;
+    if (ms&gt;500) 
+    {
+        ms -= 500;
+        if(targetMode == 1)
+        {
+            send=2;
+            read++;
+            IO_RC2_Toggle();
+        }
+        if(targetMode == 0)
+        {
+            send++;
+            read++;
+            if(send == 2)
+            {
+                IO_RC2_Toggle();
+            }
+        }
+    }
+}
 
-<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">send_message</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">my_message</span><span class="p">){</span>
-<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span><span class="n">my_message</span><span class="p">);</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="p">}</span>
-
-
-<span class="cp">#define BUFSIZE 4</span>
-<span class="cp">#define MSGSIZE 64</span>
-<span class="cp">#define TEAMSIZE 5</span>
-<span class="cp">#define MSGTESTSIZE 64</span>
-<span class="cp">#define MSGTESTCHAR 0</span>
-
-<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">my_id</span><span class="o">=</span><span class="sc">&#39;c&#39;</span><span class="p">;</span>
-<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">team_ids</span><span class="p">[</span><span class="n">TEAMSIZE</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="s">&quot;abcdX&quot;</span><span class="p">;</span>
-<span class="kt">char</span><span class="w"> </span><span class="n">buffer_in</span><span class="p">[</span><span class="n">BUFSIZE</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
-<span class="kt">char</span><span class="w"> </span><span class="n">message_in</span><span class="p">[</span><span class="n">MSGSIZE</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
-<span class="kt">char</span><span class="w"> </span><span class="n">message_out</span><span class="p">[</span><span class="n">MSGSIZE</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
-<span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">buffer_ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">buffer_last_ii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">message_ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">message_last_ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">message_incoming</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">int</span><span class="w"> </span><span class="n">messageType2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
-<span class="kt">int</span><span class="w"> </span><span class="n">messageType1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="kt">uint8_t</span><span class="w"> </span><span class="n">rpm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">uint16_t</span><span class="w"> </span><span class="n">raw_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="kt">float</span><span class="w"> </span><span class="n">delta_deg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-
-<span class="kt">void</span><span class="w"> </span><span class="nf">fill_string</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mystring</span><span class="p">,</span><span class="kt">char</span><span class="w"> </span><span class="n">value</span><span class="p">,</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">){</span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">ii</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">ii</span><span class="o">++</span><span class="p">){</span>
-<span class="w">        </span><span class="n">mystring</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">=</span><span class="n">value</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-
-<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">find_char</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mystring</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">value</span><span class="p">,</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">size</span><span class="p">){</span>
-<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">ii</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">ii</span><span class="o">++</span><span class="p">){</span>
-<span class="w">        </span><span class="n">c</span><span class="o">=</span><span class="w"> </span><span class="n">mystring</span><span class="p">[</span><span class="n">ii</span><span class="p">];</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="o">==</span><span class="n">value</span><span class="p">){</span>
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="kt">void</span><span class="w"> </span><span class="nf">handle_message</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">ii</span><span class="p">){</span>
-<span class="w">    </span><span class="n">message_in</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">message_in</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
-<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;c&#39;</span><span class="p">)</span>
-<span class="w">    </span><span class="p">{</span>
-
-<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">message_in</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">targetRPM</span><span class="o">=</span><span class="n">message_in</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
-<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">targetRPM</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="n">targetMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">targetRPM</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="n">targetMode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="p">(</span><span class="n">f</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="sc">&#39;X&#39;</span><span class="p">)</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">send_message</span><span class="p">(</span><span class="n">message_in</span><span class="p">);</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span>
-<span class="w">        </span><span class="c1">//return broadcast</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="k">else</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="n">send_message</span><span class="p">(</span><span class="n">message_in</span><span class="p">);</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
+uint8_t send_message(char * my_message){
+    printf(&quot;%s&quot;,my_message);
+    return 1;
+}
 
 
-<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">    </span><span class="n">buffer_in</span><span class="p">[</span><span class="n">BUFSIZE</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="n">message_in</span><span class="p">[</span><span class="n">MSGSIZE</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="n">fill_string</span><span class="p">(</span><span class="n">buffer_in</span><span class="p">,</span><span class="sc">&#39;a&#39;</span><span class="p">,</span><span class="n">BUFSIZE</span><span class="p">);</span>
-<span class="w">    </span><span class="n">fill_string</span><span class="p">(</span><span class="n">message_in</span><span class="p">,</span><span class="sc">&#39;_&#39;</span><span class="p">,</span><span class="n">MSGSIZE</span><span class="p">);</span>
-<span class="w">    </span><span class="n">message_in</span><span class="p">[</span><span class="n">MSGTESTSIZE</span><span class="p">]</span><span class="o">=</span><span class="n">MSGTESTCHAR</span><span class="p">;</span>
+#define BUFSIZE 4
+#define MSGSIZE 64
+#define TEAMSIZE 5
+#define MSGTESTSIZE 64
+#define MSGTESTCHAR 0
 
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">ms_last</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">sec_last</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">adc_value</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">voltage</span><span class="p">;</span>
-<span class="w">    </span><span class="n">SYSTEM_Initialize</span><span class="p">();</span>
-<span class="w">    </span><span class="n">INTERRUPT_GlobalInterruptEnable</span><span class="p">();</span><span class="w"> </span>
-<span class="w">    </span><span class="n">INTERRUPT_PeripheralInterruptEnable</span><span class="p">();</span><span class="w"> </span>
-<span class="w">    </span><span class="n">Timer1_Initialize</span><span class="p">();</span>
-<span class="w">    </span><span class="n">Timer1_Start</span><span class="p">();</span>
+const char my_id='c';
+const char team_ids[TEAMSIZE+1]=&quot;abcdX&quot;;
+char buffer_in[BUFSIZE+1];
+char message_in[MSGSIZE+1];
+char message_out[MSGSIZE+1];
+char c=0;
+unsigned int buffer_ii=0;
+unsigned int buffer_last_ii = 0;
+unsigned int message_ii=0;
+unsigned int message_last_ii=0;
+unsigned int message_incoming=0;
+int messageType2 = 2;
+int messageType1 = 1;
+uint8_t rpm = 0;
+uint16_t raw_angle = 0;
+float delta_deg = 0.0;
 
-<span class="w">    </span><span class="n">TMR1_OverflowCallbackRegister</span><span class="p">(</span><span class="n">timer_callback</span><span class="p">);</span>
+void fill_string(char * mystring,char value,unsigned int size){
+    for (int ii=0;ii&lt;size;ii++){
+        mystring[ii]=value;
+    }
+}
 
-<span class="w">    </span><span class="n">UART1_Initialize</span><span class="p">();</span>
-<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="w">    </span><span class="p">{</span>
-<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">EUSART1_IsRxReady</span><span class="p">())</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">c</span><span class="o">=</span><span class="w"> </span><span class="n">EUSART1_Read</span><span class="p">();</span>
-<span class="w">            </span><span class="n">buffer_in</span><span class="p">[</span><span class="n">buffer_ii</span><span class="p">]</span><span class="o">=</span><span class="n">c</span><span class="p">;</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">buffer_in</span><span class="p">[</span><span class="n">buffer_last_ii</span><span class="p">]</span><span class="o">==</span><span class="sc">&#39;A&#39;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">buffer_in</span><span class="p">[</span><span class="n">buffer_ii</span><span class="p">]</span><span class="o">==</span><span class="sc">&#39;Z&#39;</span><span class="p">){</span>
-<span class="w">                </span><span class="n">fill_string</span><span class="p">(</span><span class="n">message_in</span><span class="p">,</span><span class="sc">&#39;_&#39;</span><span class="p">,</span><span class="n">MSGSIZE</span><span class="p">);</span>
-<span class="w">                </span><span class="n">message_in</span><span class="p">[</span><span class="n">MSGTESTSIZE</span><span class="p">]</span><span class="o">=</span><span class="n">MSGTESTCHAR</span><span class="p">;</span>
-<span class="w">                </span><span class="n">message_incoming</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-<span class="w">                </span><span class="n">message_in</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buffer_in</span><span class="p">[</span><span class="n">buffer_last_ii</span><span class="p">];</span>
-<span class="w">                </span><span class="n">message_ii</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">buffer_in</span><span class="p">[</span><span class="n">buffer_last_ii</span><span class="p">]</span><span class="o">==</span><span class="sc">&#39;Y&#39;</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">buffer_in</span><span class="p">[</span><span class="n">buffer_ii</span><span class="p">]</span><span class="o">==</span><span class="sc">&#39;B&#39;</span><span class="p">){</span>
-<span class="w">                </span><span class="n">message_incoming</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="w">                </span><span class="n">message_in</span><span class="p">[</span><span class="n">message_ii</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buffer_in</span><span class="p">[</span><span class="n">buffer_ii</span><span class="p">];</span>
-<span class="w">                </span><span class="n">message_last_ii</span><span class="o">=</span><span class="w"> </span><span class="n">message_ii</span><span class="p">;</span>
-<span class="w">                </span><span class="n">message_ii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">message_ii</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
-<span class="w">                </span><span class="n">handle_message</span><span class="p">(</span><span class="n">message_ii</span><span class="p">);</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">message_incoming</span><span class="o">!=</span><span class="mi">0</span><span class="p">){</span>
-<span class="w">                </span><span class="n">message_in</span><span class="p">[</span><span class="n">message_ii</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">buffer_in</span><span class="p">[</span><span class="n">buffer_ii</span><span class="p">];</span>
+unsigned int find_char(char * mystring, char value,unsigned int size){
+    char c=0;
+    for (int ii=0;ii&lt;size;ii++){
+        c= mystring[ii];
+        if (c==value){
+            return 1;
+        }
+    }
+    return 0;
+}
 
-<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">message_ii</span><span class="o">==</span><span class="mi">2</span><span class="p">){</span>
-<span class="w">                    </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">                    </span><span class="kt">char</span><span class="w"> </span><span class="n">d</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="w">                    </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">message_in</span><span class="p">[</span><span class="n">message_ii</span><span class="p">];</span>
-<span class="w">                    </span><span class="n">result</span><span class="o">=</span><span class="w"> </span><span class="n">find_char</span><span class="p">(</span><span class="n">team_ids</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">TEAMSIZE</span><span class="p">);</span>
-<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span>
-<span class="w">                        </span><span class="c1">//printf(&quot;AZbaPIC: sender not in teamYB\n&quot;);</span>
-<span class="w">                        </span><span class="n">message_incoming</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">                        </span><span class="n">message_ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="w">                    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                    </span><span class="p">}</span>
-<span class="w">                </span><span class="p">}</span>
+void handle_message(unsigned int ii){
+    message_in[ii] = 0;
+    char f = message_in[3];
+    if(f == 'c')
+    {
 
-<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">message_ii</span><span class="o">==</span><span class="mi">2</span><span class="p">){</span>
-<span class="w">                    </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">                    </span><span class="kt">char</span><span class="w"> </span><span class="n">d</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="w">                    </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">message_in</span><span class="p">[</span><span class="n">message_ii</span><span class="p">];</span>
-<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">d</span><span class="o">==</span><span class="sc">&#39;c&#39;</span><span class="p">){</span>
-<span class="w">                        </span><span class="c1">//printf(&quot;AZbaPIC: sender is yourselfYB\n&quot;);</span>
-<span class="w">                        </span><span class="n">message_incoming</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">                        </span><span class="n">message_ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="w">                    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                    </span><span class="p">}</span>
-<span class="w">                </span><span class="p">}</span>
+        if(message_in[4] == 3)
+        {
+            targetRPM=message_in[5];
+            if(targetRPM&gt;0)
+            {
+                targetMode = 1;
+            }
+            if(targetRPM==0)
+            {
+                targetMode = 0;
+            }
+        }
+    }
+    else if(f == 'X')
+    {
+        send_message(message_in);
+        return;
+        //return broadcast
+    }
+    else
+    {
+        send_message(message_in);
+        return;
+    }
+}
 
-<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">message_ii</span><span class="o">==</span><span class="mi">3</span><span class="p">){</span>
-<span class="w">                    </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">                    </span><span class="kt">char</span><span class="w"> </span><span class="n">d</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="w">                    </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">message_in</span><span class="p">[</span><span class="n">message_ii</span><span class="p">];</span>
-<span class="w">                    </span><span class="n">result</span><span class="o">=</span><span class="w"> </span><span class="n">find_char</span><span class="p">(</span><span class="n">team_ids</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">TEAMSIZE</span><span class="p">);</span>
-<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="o">==</span><span class="mi">0</span><span class="p">){</span><span class="w"> </span>
-<span class="w">                        </span><span class="c1">//printf(&quot;AZbaPIC: receiver not in teamYB\n&quot;);</span>
-<span class="w">                        </span><span class="n">message_incoming</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">                        </span><span class="n">message_ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="w">                    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                    </span><span class="p">}</span>
-<span class="w">                </span><span class="p">}</span>
 
-<span class="w">                </span><span class="n">message_last_ii</span><span class="o">=</span><span class="w"> </span><span class="n">message_ii</span><span class="p">;</span>
-<span class="w">                </span><span class="n">message_ii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">message_ii</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
-<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">message_ii</span><span class="o">&lt;</span><span class="n">MSGTESTSIZE</span><span class="p">){}</span><span class="w"> </span><span class="k">else</span><span class="p">{</span>
-<span class="w">                    </span><span class="c1">//printf(&quot;AZbaPIC: message too large. deletingYB\n&quot;);</span>
-<span class="w">                    </span><span class="n">message_incoming</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="w">                    </span><span class="n">message_ii</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<span class="w">                </span><span class="p">}</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">            </span><span class="n">buffer_last_ii</span><span class="o">=</span><span class="w"> </span><span class="n">buffer_ii</span><span class="p">;</span>
-<span class="w">            </span><span class="n">buffer_ii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">buffer_ii</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">%</span><span class="n">BUFSIZE</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="n">sec_last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sec</span><span class="p">;</span>
-<span class="w">        </span><span class="n">ms_last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ms</span><span class="p">;</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">read</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">angleLast</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angle</span><span class="p">;</span>
+int main(void)
+{
+    buffer_in[BUFSIZE]=0;
+    message_in[MSGSIZE]=0;
+    fill_string(buffer_in,'a',BUFSIZE);
+    fill_string(message_in,'_',MSGSIZE);
+    message_in[MSGTESTSIZE]=MSGTESTCHAR;
 
-<span class="w">            </span><span class="n">i2c_WriteRead</span><span class="p">(</span><span class="n">Slave_Address</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">angleReg1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
-<span class="w">            </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"> </span>
-<span class="w">            </span><span class="n">i2c_WriteRead</span><span class="p">(</span><span class="n">Slave_Address</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">angleReg2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+    uint16_t ms_last=0;
+    uint16_t sec_last=0;
+    uint16_t adc_value;
+    float voltage;
+    SYSTEM_Initialize();
+    INTERRUPT_GlobalInterruptEnable(); 
+    INTERRUPT_PeripheralInterruptEnable(); 
+    Timer1_Initialize();
+    Timer1_Start();
 
-<span class="w">            </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">raw_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x0F</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-<span class="w">            </span><span class="n">angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="kt">float</span><span class="p">)</span><span class="n">raw_angle</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">360.0f</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">4096.0f</span><span class="p">;</span>
+    TMR1_OverflowCallbackRegister(timer_callback);
 
-<span class="w">            </span><span class="c1">// Handle angle wraparound</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">angle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">angleLast</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">180.0f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="n">delta_deg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">360.0f</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">angleLast</span><span class="p">;</span>
-<span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">angle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">angleLast</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">-180.0f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="n">delta_deg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">360.0f</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">angleLast</span><span class="p">;</span>
-<span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="n">delta_deg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">angle</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">angleLast</span><span class="p">;</span>
-<span class="w">            </span><span class="p">}</span>
+    UART1_Initialize();
+    while(1)
+    {
+        if(EUSART1_IsRxReady())
+        {
+            c= EUSART1_Read();
+            buffer_in[buffer_ii]=c;
+            if (buffer_in[buffer_last_ii]=='A' &amp; buffer_in[buffer_ii]=='Z'){
+                fill_string(message_in,'_',MSGSIZE);
+                message_in[MSGTESTSIZE]=MSGTESTCHAR;
+                message_incoming=1;
+                message_in[0] = buffer_in[buffer_last_ii];
+                message_ii=1;
+            }
+            if (buffer_in[buffer_last_ii]=='Y' &amp; buffer_in[buffer_ii]=='B'){
+                message_incoming=0;
+                message_in[message_ii] = buffer_in[buffer_ii];
+                message_last_ii= message_ii;
+                message_ii = message_ii+1;
+                handle_message(message_ii);
+            }
+            if (message_incoming!=0){
+                message_in[message_ii] = buffer_in[buffer_ii];
 
-<span class="w">            </span><span class="c1">// Check if the angle change is too small for RPM calculation</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">delta_deg</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.1f</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">delta_deg</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">-0.1f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="n">rpm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// Set RPM to 0 if the change is too small</span>
-<span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="n">rpm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">delta_deg</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">360.0f</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">60.0f</span><span class="p">;</span>
-<span class="w">            </span><span class="p">}</span>
+                if (message_ii==2){
+                    unsigned result = 0;
+                    char d=0;
+                    d = message_in[message_ii];
+                    result= find_char(team_ids,d,TEAMSIZE);
+                    if (result==0){
+                        //printf(&quot;AZbaPIC: sender not in teamYB\n&quot;);
+                        message_incoming = 0;
+                        message_ii=0;
+                    } else {
+                    }
+                }
 
-<span class="w">            </span><span class="c1">// Clamp RPM to uint8_t range [0, 255]</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rpm</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="n">rpm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// Clamp to 0 if RPM is negative</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">rpm</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="n">rpm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">255</span><span class="p">;</span><span class="w">  </span><span class="c1">// Clamp to 255 if RPM is greater than 255</span>
-<span class="w">            </span><span class="p">}</span>
+                if (message_ii==2){
+                    unsigned result = 0;
+                    char d=0;
+                    d = message_in[message_ii];
+                    if (d=='c'){
+                        //printf(&quot;AZbaPIC: sender is yourselfYB\n&quot;);
+                        message_incoming = 0;
+                        message_ii=0;
+                    } else {
+                    }
+                }
 
-<span class="w">            </span><span class="c1">// Cast to uint8_t</span>
-<span class="w">            </span><span class="n">rpm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span><span class="n">rpm</span><span class="p">;</span>
+                if (message_ii==3){
+                    unsigned result = 0;
+                    char d=0;
+                    d = message_in[message_ii];
+                    result= find_char(team_ids,d,TEAMSIZE);
+                    if (result==0){ 
+                        //printf(&quot;AZbaPIC: receiver not in teamYB\n&quot;);
+                        message_incoming = 0;
+                        message_ii=0;
+                    } else {
+                    }
+                }
 
-<span class="w">            </span><span class="n">read</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">send</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;AZcX&quot;</span><span class="p">);</span>
-<span class="w">            </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-<span class="w">            </span><span class="n">EUSART1_Write</span><span class="p">(</span><span class="n">messageType2</span><span class="p">);</span>
-<span class="w">            </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-<span class="w">            </span><span class="n">EUSART1_Write</span><span class="p">(</span><span class="n">rpm</span><span class="p">);</span>
-<span class="w">            </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;YB&quot;</span><span class="p">);</span>
-<span class="w">            </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+                message_last_ii= message_ii;
+                message_ii = message_ii+1;
+                if (message_ii&lt;MSGTESTSIZE){} else{
+                    //printf(&quot;AZbaPIC: message too large. deletingYB\n&quot;);
+                    message_incoming=0;
+                    message_ii=0;
+                }
+            }
+            buffer_last_ii= buffer_ii;
+            buffer_ii = (buffer_ii+1)%BUFSIZE;
+        }
+        sec_last = sec;
+        ms_last = ms;
+        if (read == 1)
+        {
+            angleLast = angle;
 
-<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">targetMode</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="k">if</span><span class="p">(</span><span class="n">rpm</span><span class="o">&lt;</span><span class="n">targetRPM</span><span class="p">)</span>
-<span class="w">                </span><span class="p">{</span>
-<span class="w">                    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;AZcX&quot;</span><span class="p">);</span>
-<span class="w">                    </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-<span class="w">                    </span><span class="n">EUSART1_Write</span><span class="p">(</span><span class="n">messageType1</span><span class="p">);</span>
-<span class="w">                    </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-<span class="w">                    </span><span class="n">EUSART1_Write</span><span class="p">(</span><span class="n">one</span><span class="p">);</span>
-<span class="w">                    </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-<span class="w">                    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;YB&quot;</span><span class="p">);</span>
-<span class="w">                    </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-<span class="w">                </span><span class="p">}</span>
-<span class="w">                </span><span class="k">if</span><span class="p">(</span><span class="n">rpm</span><span class="o">&gt;</span><span class="n">targetRPM</span><span class="p">)</span>
-<span class="w">                </span><span class="p">{</span>
-<span class="w">                    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;AZcX&quot;</span><span class="p">);</span>
-<span class="w">                    </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-<span class="w">                    </span><span class="n">EUSART1_Write</span><span class="p">(</span><span class="n">messageType1</span><span class="p">);</span>
-<span class="w">                    </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-<span class="w">                    </span><span class="n">EUSART1_Write</span><span class="p">(</span><span class="n">two</span><span class="p">);</span>
-<span class="w">                    </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-<span class="w">                    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;YB&quot;</span><span class="p">);</span>
-<span class="w">                    </span><span class="n">__delay_ms</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
-<span class="w">                </span><span class="p">}</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">            </span><span class="n">send</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
+            i2c_WriteRead(Slave_Address, &amp;angleReg1, 1, b, 1);
+            __delay_ms(10); 
+            i2c_WriteRead(Slave_Address, &amp;angleReg2, 1, &amp;b[1], 1);
+
+            uint16_t raw_angle = ((b[0] &amp; 0x0F) &lt;&lt; 8) | b[1];
+            angle = ((float)raw_angle * 360.0f) / 4096.0f;
+
+            // Handle angle wraparound
+            if (angle - angleLast &gt; 180.0f) {
+                delta_deg = angle - 360.0f - angleLast;
+            } else if (angle - angleLast &lt; -180.0f) {
+                delta_deg = 360.0f + angle - angleLast;
+            } else {
+                delta_deg = angle - angleLast;
+            }
+
+            // Check if the angle change is too small for RPM calculation
+            if (delta_deg &lt; 0.1f &amp;&amp; delta_deg &gt; -0.1f) {
+                rpm = 0;  // Set RPM to 0 if the change is too small
+            } else {
+                rpm = (delta_deg / 360.0f) * 60.0f;
+            }
+
+            // Clamp RPM to uint8_t range [0, 255]
+            if (rpm &lt; 0) {
+                rpm = 0;  // Clamp to 0 if RPM is negative
+            }
+            if (rpm &gt; 255) {
+                rpm = 255;  // Clamp to 255 if RPM is greater than 255
+            }
+
+            // Cast to uint8_t
+            rpm = (uint8_t)rpm;
+
+            read = 0;
+        }
+        if(send == 2)
+        {
+            printf(&quot;AZcX&quot;);
+            __delay_ms(5);
+            EUSART1_Write(messageType2);
+            __delay_ms(5);
+            EUSART1_Write(rpm);
+            __delay_ms(5);
+            printf(&quot;YB&quot;);
+            __delay_ms(5);
+
+            if(targetMode == 1)
+            {
+                if(rpm&lt;targetRPM)
+                {
+                    printf(&quot;AZcX&quot;);
+                    __delay_ms(5);
+                    EUSART1_Write(messageType1);
+                    __delay_ms(5);
+                    EUSART1_Write(one);
+                    __delay_ms(5);
+                    printf(&quot;YB&quot;);
+                    __delay_ms(5);
+                }
+                if(rpm&gt;targetRPM)
+                {
+                    printf(&quot;AZcX&quot;);
+                    __delay_ms(5);
+                    EUSART1_Write(messageType1);
+                    __delay_ms(5);
+                    EUSART1_Write(two);
+                    __delay_ms(5);
+                    printf(&quot;YB&quot;);
+                    __delay_ms(5);
+                }
+            }
+            send = 0;
+        }
+    }
+}
+</code></pre>
 <ul>
 <li><a href="../Messaging.X.zip">MPLabX Files</a></li>
 </ul>
